@@ -4,6 +4,7 @@ const sinon = require('sinon')
 const { join } = require('path')
 
 const CarService = require('../../src/service/carService')
+const Transaction = require('../../src/entities/transaction')
 const carsDatabase = join(__dirname, '../../database', 'cars.json')
 
 const mocks = {
@@ -70,6 +71,68 @@ describe('CarService', () => {
 
     expect(carService.chooseRandomCar.calledOnce).to.be.ok
     expect(carService.carRepository.find.calledWithExactly(car.id)).to.be.ok
+    expect(result).to.be.deep.equal(expected)
+  })
+
+  it('should calculate the final amount in real when given a car category, customer and number of days', () => {
+    const customer = Object.create(mocks.validCustomer)
+    customer.age = 50
+
+    const carCategory = Object.create(mocks.validCarCategory)
+    carCategory.price = 37.6
+
+    const numberOfDays = 5
+
+    sandbox.stub(
+      carService,
+      'taxesBasedOnAge'
+    ).get(() => [{ from: 40, to: 50, then: 1.3 }])
+
+    const expected = carService.currencyFormat.format(244.40)
+
+    const result = carService.calculateFinalPrice(
+      customer,
+      carCategory,
+      numberOfDays
+    )
+
+    expect(result).to.be.deep.equal(expected)
+  })
+
+  it('should return a transaction receipt when given a customer and a car category', async () => {
+    const car = Object.create(mocks.validCar)
+    const carCategory = {
+      ...mocks.validCarCategory,
+      price: 37.6,
+      carIds: [car.id]
+    }
+
+    const customer = Object.create(mocks.validCustomer)
+    customer.age = 20
+    
+    const numberOfDays = 5
+    const dueDate = '10 de novembro de 2020'
+
+    const now = new Date(2020, 10, 5)
+    sandbox.useFakeTimers(now.getTime())
+
+    sandbox.stub(
+      carService.carRepository,
+      'find'
+    ).resolves(car)
+
+    const expectedAmount = carService.currencyFormat.format(206.80)
+    const result = await carService.rent(
+      customer, carCategory, numberOfDays
+    )
+
+    const expected = new Transaction({
+      customer,
+      car,
+      dueDate,
+      amount: expectedAmount
+    })
+
     expect(result).to.be.deep.equal(expected)
   })
 })
