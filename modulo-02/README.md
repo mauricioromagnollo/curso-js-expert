@@ -1,5 +1,9 @@
 # Módulo 02 - **JavaScript Testing**
 
+Observacão:
+
+> Para executar qualquer um dos exemplos, lembre de conferir a versão do Node.js `node -v` e instalar as dependências `npm install`.
+
 ## Aula 01 - Trabalhando com **Mocks**
 
 Imagine que você está testando uma aplicação do ponto A ao ponto C.
@@ -20,3 +24,13 @@ Observações:
 - Os requisitos estão descritos no arquivo **[requirements.txt](./aula-01-mocks/requirements.txt)**.
 - A versão do Node.js se contra no arquivo .node-version e para executar os testes basta rodar o comando `npm test`.
 - Os testes foram escritos de forma "simples" sem utilizar nenhum framework ou bliblioteca de testes. Curiosidade: Os testes do Node.js são escritos dessa forma no repositorio oficial do Node.js.
+
+## Aula 02 - Trabalhando com **Stubs**
+
+Os stubs servem para substituir algum comportamento do sistema/função que você não quer que seja executado durante o teste. Por exemplo, imagine que você tem uma função que faz uma requisição para uma API externa e você não quer que essa requisição seja feita durante o teste, então você cria um stub para substituir essa função.
+
+Ou seja, os stubs substituem um comportamento específico, retornando um mock específico, para que você possa testar o comportamento do seu código.
+
+Os nossos testes não devem depender de serviços externos ou de conexão com a internet, então os stubs são muito úteis para substituir essas dependências.
+
+O exemplo dessa aula se encontra no diretório **[aula-02-stubs](./aula-02-stubs/)**, onde utilizamos a API do Star Wars <https://swapi.dev/> para buscar informações sobre os planetas e criamos um stub para substituir essa requisição nos testes, ou seja, não devemos fazer requisições em API's externas nos testes.
