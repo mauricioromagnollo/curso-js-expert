@@ -1,0 +1,12 @@
+{
+  "name": "aula-01-mocks",
+  "version": "1.0.0",
+  "main": "index.js",
+  "type": "module",
+  "engines": {
+    "node": "18.14.2"
+  },
+  "scripts": {
+    "test": "node src/file.spec.js"
+  }
+}

@@ -1,0 +1,5 @@
+# File
+
+- should not be empty
+- should not be allowed to pass invalid headers (only id, name, profession and age fields)
+- should not be longer than 4 lines including headers
