@@ -1,6 +1,9 @@
+# Build files
 node_modules
 
 # Tests
 .nyc_output
 coverage
+
+# IDE's / SO
 .DS_Store
